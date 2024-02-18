@@ -19,19 +19,11 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.service.isAuthenticated().subscribe((isAuthenticated: any) => {
-      console.log(isAuthenticated)
-      if (!isAuthenticated){
-        this.router.navigate(['login'])
-      }
-    })
-    // this.setList();
   }
 
   setList() {
     this.service.getVault().subscribe((res: any) => {
       this.list = res;
-      console.log(res)
     });
   }
 }

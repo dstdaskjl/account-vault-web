@@ -21,7 +21,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private service: LoginService
+    private service: LoginService,
   ){
     this.creatForm();
   }
@@ -42,8 +42,9 @@ export class LoginComponent {
   onLogInClick(){
     const email = this.form.get('email')?.value;
     const password = this.form.get('password')?.value;
-    this.service.login(email, password).subscribe((isLoggedIn: any) => {
-      if (isLoggedIn){
+    this.service.login(email, password).subscribe((token: any) => {
+      if (token && token.key && token.user_id){
+        localStorage.setItem("currentToken", JSON.stringify(token));
         this.router.navigate(['home']);
       } else {
         this.isLoginInvalid = true;

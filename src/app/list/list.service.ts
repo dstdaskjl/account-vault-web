@@ -12,8 +12,4 @@ export class ListService {
   getVault(): Observable<List> {
     return this.http.get('http://localhost:8000/vault') as Observable<List>;
   }
-
-  isAuthenticated(): Observable<any> {
-    return this.http.get('http://localhost:8000/is_authenticated') as Observable<any>;
-  }
 }

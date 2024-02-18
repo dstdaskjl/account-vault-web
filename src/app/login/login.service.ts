@@ -9,6 +9,9 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post('http://localhost:8000/login/', {test: 1, email: email, password: password}) as Observable<any>;
+    return this.http.post(
+      'http://localhost:8000/api-token-auth/',
+      { email, password }
+    ) as Observable<any>;
   }
 }

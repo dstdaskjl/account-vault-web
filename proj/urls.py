@@ -5,12 +5,10 @@ from rest_framework import routers
 from account_vault import views
 
 router = routers.DefaultRouter()
-# router.register(r'hints', views.HintsView.as_view(), basename='Hints')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
-    path("hints/", views.get_vault),
-    path("is_authenticated/", views.is_authenticated),
-    path("login/", views.login),
+    path("is-token-valid/", views.is_token_valid),
+    path("api-token-auth/", views.AuthToken.as_view()),
 ]
