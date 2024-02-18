@@ -1,19 +1,21 @@
-import json
-from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Vault
+from .serializers import VaultSerializer
 
 
-def get_vault(request, email):
-    return Vault.objects.filter(user__email=email)
+@api_view(("GET",))
+def get_vault(request):
+    user_id = request.GET.get("user_id")
+    vault = Vault.objects.filter(user=user_id)
+    vault = [VaultSerializer(each) for each in vault]
+    print(vault)
+    return Response(vault)
 
 
 @api_view(("GET",))

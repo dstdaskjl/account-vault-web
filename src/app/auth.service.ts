@@ -11,17 +11,14 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public async isAuthenticated(): Promise<boolean> {
-    if (typeof localStorage !== "undefined"){
-      const tokenStr = localStorage.getItem("currentToken") as string;
-      const tokenObj = JSON.parse(tokenStr);
-      if (tokenObj){
-        return await this.isTokenValid(tokenObj);
-      }
+    const token = this.getCurrentToken();
+    if (token){
+      return await this.isTokenValid(token);
     }
     return false;
   }
 
-  private async isTokenValid(token: any): Promise<boolean> {
+  private async isTokenValid(token: {key: string, user_id: string}): Promise<boolean> {
     const valid = await firstValueFrom(
       this.http.get(
         'http://localhost:8000/is-token-valid/',
@@ -29,5 +26,18 @@ export class AuthService {
       )
     ) as boolean;
     return valid;
+  }
+
+  public getCurrentToken(): {key: string, user_id: string} | null {
+    if (typeof localStorage !== "undefined"){
+      const tokenStr = localStorage.getItem("currentToken") as string;
+      if (tokenStr){
+        const tokenObj = JSON.parse(tokenStr);
+        if (tokenObj){
+          return tokenObj
+        }
+      }
+    }
+    return null;
   }
 }

@@ -1,1 +1,11 @@
+<mat-toolbar>
+  <span>I FORGOT AGAIN</span>
+  <span class="example-spacer"></span>
+  @if (isAuthenticated){
+    <button class="sign-button" mat-button color="primary" (click)="onSignOutClick()"> Sign Out </button>
+  }
+  @else {
+    <button class="sign-button" mat-button color="primary" (click)="onSignInClick()"> Sign In </button>
+  }
+</mat-toolbar>
 <router-outlet></router-outlet>
