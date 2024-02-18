@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ListService } from './list.service';
+import { VaultService } from './vault.service';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-vault',
   standalone: true,
   imports: [HttpClientModule],
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.css'
+  templateUrl: './vault.component.html',
+  styleUrl: './vault.component.css'
 })
-export class ListComponent implements OnInit {
+export class VaultComponent implements OnInit {
   list !: any[];
 
   constructor(
-    private service: ListService,
+    private service: VaultService,
     private router: Router
   ) { }
 

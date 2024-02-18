@@ -1,15 +1,15 @@
 import { Observable } from "rxjs";
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { List } from "./list";
+import { Vault } from "./vault";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ListService {
+export class VaultService {
   constructor(private http: HttpClient) { }
 
-  getVault(): Observable<List> {
-    return this.http.get('http://localhost:8000/vault') as Observable<List>;
+  getVault(): Observable<Vault> {
+    return this.http.get('http://localhost:8000/vault') as Observable<Vault>;
   }
 }
