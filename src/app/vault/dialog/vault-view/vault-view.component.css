@@ -1,0 +1,15 @@
+.card-content {
+  margin-top: 15px;
+}
+
+.card-title {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.submit-buttons {
+  float:right;
+  margin-left: auto;
+  width: fit-content;
+}

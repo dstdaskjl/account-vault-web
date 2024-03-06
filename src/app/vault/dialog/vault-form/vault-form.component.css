@@ -1,0 +1,13 @@
+.submit-buttons {
+  float:right;
+  margin-left: auto;
+  width: fit-content;
+}
+
+.card-content {
+  margin-top: 15px;
+}
+
+:host ::ng-deep mat-form-field {
+  width: 100%;
+}

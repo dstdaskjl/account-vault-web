@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Create</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    <form [formGroup]="form">
+      <mat-form-field required>
+        <mat-label>Website</mat-label>
+        <input matInput formControlName="website">
+      </mat-form-field>
+      <mat-form-field required>
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+      <mat-form-field required>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password">
+      </mat-form-field>
+    </form>
+  <div class="submit-buttons">
+    <button mat-button mat-dialog-close (click)="onCancelClick()">Cancel</button>
+    <button mat-button mat-dialog-close color="primary" (click)="onSaveClick()" [disabled]="form.invalid">Save</button>
+  </div>
+  </mat-card-content>
+</mat-card>

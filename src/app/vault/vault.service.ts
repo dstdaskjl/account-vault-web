@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { firstValueFrom } from "rxjs";
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, firstValueFrom } from "rxjs";
 import { Vault } from "./vault";
 import { AuthService } from '../auth.service';
 
@@ -8,20 +9,57 @@ import { AuthService } from '../auth.service';
   providedIn: 'root'
 })
 export class VaultService {
+  localStorage: any;
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private http: HttpClient, private auth: AuthService
+    ) {
+      this.localStorage = document.defaultView?.localStorage;
+  }
 
   async getVault(): Promise<Vault[]> {
-    const token = this.auth.getCurrentToken();
-    if (token){
-      const vault = await firstValueFrom(
-        this.http.get(
-          'http://localhost:8000/get-vault/',
-          { params: new HttpParams().set("user_id", token.user_id) }
-        )
-      ) as Vault[];
-      return vault
-    }
-    return [];
+    const token = this.localStorage.getItem('token');
+    const vault = await firstValueFrom(
+      this.http.post(
+        'http://localhost:8000/api/vault/',
+        null,
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          })
+        }
+      )
+    ) as Vault[];
+    return vault;
+  }
+
+  create(data: any): Observable<object>{
+    const token = this.localStorage.getItem('token');
+    return this.http.post(
+      'http://localhost:8000/api/vault/create',
+      JSON.stringify(data),
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        })
+      }
+    );
+  }
+
+  delete(data: any): Observable<object>{
+    const token = this.localStorage.getItem('token');
+    return this.http.post(
+      'http://localhost:8000/api/vault/delete',
+      JSON.stringify(data),
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        })
+      }
+    )
   }
 }

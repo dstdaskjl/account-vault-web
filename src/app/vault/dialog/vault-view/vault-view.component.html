@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title style="display: inline-block;">
+      <img src={{iconUrl}} alt={{website}} width="30vw" height="30vh">
+      <h3 class="card-title">{{website}}</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    @if (isEditable){
+      <mat-selection-list #selection>
+        @for (info of userInfo; track info) {
+          <mat-list-option title="{{info.username}}&#10;{{info.password}}" [value]="info">
+            {{info.username}}
+            <br>
+            {{info.password}}
+          </mat-list-option>
+          <br>
+        }
+      </mat-selection-list>
+      <div class="submit-buttons">
+        <button mat-button (click)="onCancelClick()">Cancel</button>
+        <button mat-button color="warn" (click)="onDeleteClick(selection.selectedOptions.selected)" [disabled]="selection.selectedOptions.selected.length === 0">Delete</button>
+      </div>
+    }
+    @else {
+      <mat-list>
+        @for (info of userInfo; track info){
+          <mat-list-item title="{{info.username}}&#10;{{info.password}}">
+            {{info.username}}
+            <br>
+            {{info.password}}
+          </mat-list-item>
+          <br>
+        }
+      </mat-list>
+      <div class="submit-buttons">
+        <button mat-button mat-dialog-close>Close</button>
+        <button mat-button color="primary" (click)="onUpdateClick()">Update</button>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

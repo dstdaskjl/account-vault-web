@@ -4,17 +4,17 @@
   </mat-card-header>
   <mat-card-content class="card-content">
     <form [formGroup]="form">
-        <mat-form-field class="full-width-form" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email">
+        <mat-form-field class="full-width-form">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" type="username">
         </mat-form-field>
         <br>
-        <mat-form-field  class="full-width-form" appearance="outline">
+        <mat-form-field  class="full-width-form">
           <mat-label>Password</mat-label>
           <input matInput formControlName="password" type="password" (keyup.enter)="onEnterPressed()">
         </mat-form-field>
         @if (isLoginInvalid){
-          <mat-error style="margin-top: 0;">Wrong email or password.</mat-error>
+          <mat-error style="margin-top: 0;">Wrong username or password.</mat-error>
         }
     </form>
   </mat-card-content>

@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent {
   isLoginInvalid = false;
 
   constructor(
+    private auth: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
     private service: LoginService,
@@ -28,7 +30,7 @@ export class LoginComponent {
 
   creatForm(){
     this.form = this.formBuilder.group({
-      email: [null, Validators.required],
+      username: [null, Validators.required],
       password: [null, Validators.required]
     })
   }
@@ -40,15 +42,8 @@ export class LoginComponent {
   }
 
   onLogInClick(){
-    const email = this.form.get('email')?.value;
+    const username = this.form.get('username')?.value;
     const password = this.form.get('password')?.value;
-    this.service.login(email, password).subscribe((token: any) => {
-      if (token && token.key && token.user_id){
-        localStorage.setItem("currentToken", JSON.stringify(token));
-        this.router.navigate(['home']);
-      } else {
-        this.isLoginInvalid = true;
-      }
-    });
+    this.auth.login({username, password})
   }
 }

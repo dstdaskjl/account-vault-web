@@ -1,45 +1,76 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+import json
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Vault
 from .serializers import VaultSerializer
 
 
-@api_view(("GET",))
-def get_vault(request):
-    user_id = request.GET.get("user_id")
-    vault = Vault.objects.filter(user=user_id)
-    vault = [VaultSerializer(each) for each in vault]
-    print(vault)
-    return Response(vault)
+def encrypt(text: str, key: str) -> str:
+    fernet = Fernet(key.encode("utf8")[-44:])
+    token = fernet.encrypt(text.encode("utf8"))
+    return token.decode("utf8")
 
 
-@api_view(("GET",))
-def is_token_valid(request):
-    key = request.GET.get("key")
-    user_id = request.GET.get("user_id")
-    tokens = Token.objects.filter(key=key)
-    if tokens.exists():
-        token = tokens[0]
-        user_id_from_db = str(token.user_id)
-        if user_id_from_db == user_id:
-            return Response(True)
-    return Response(False)
+def decrypt(token: str, key: str) -> str:
+    fernet = Fernet(key.encode("utf8")[-44:])
+    text = fernet.decrypt(token.encode("utf8"))
+    return text.decode("utf8")
 
 
-class AuthToken(ObtainAuthToken):
+class UserView(APIView):
     def post(self, request, *args, **kwargs):
-        email = request.data["email"]
-        password = request.data["password"]
-        userQuerySet = User.objects.filter(email=email)
-        if userQuerySet.exists():
-            username = userQuerySet[0].username
-            user = authenticate(request, username=username, password=password)
-            if user:
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({"key": token.key, "user_id": user.pk})
+        return Response(request.user.first_name)
+
+
+class VaultView(APIView):
+    def post(self, request, *args, **kwargs):
+        vault = Vault.objects.filter(user=request.user)
+        serialized_vault = [VaultSerializer(each).data for each in vault]
+        grouped_vault = {}
+        for item in serialized_vault:
+            website = decrypt(item["website"], request.user.password)
+            user_info = {
+                "username": decrypt(item["username"], request.user.password),
+                "password": decrypt(item["password"], request.user.password),
+            }
+            if website in grouped_vault:
+                grouped_vault[website].append(user_info)
+            else:
+                grouped_vault[website] = [user_info]
+        return Response(grouped_vault)
+
+
+class VaultCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode("utf8"))
+        website = encrypt(data["website"], request.user.password)
+        username = encrypt(data["username"], request.user.password)
+        password = encrypt(data["password"], request.user.password)
+        Vault.objects.create(
+            user=request.user, website=website, username=username, password=password
+        )
+        return Response()
+
+
+class VaultDeleteView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body.decode("utf8"))
+        website = data["website"]
+        username = data["username"]
+        password = data["password"]
+        # website = encrypt(data["website"], request.user.password)
+        # username = encrypt(data["username"], request.user.password)
+        # password = encrypt(data["password"], request.user.password)
+        for record in Vault.objects.filter(user=request.user):
+            if (
+                decrypt(record.website, request.user.password) == website
+                and decrypt(record.username, request.user.password) == username
+                and decrypt(record.password, request.user.password) == password
+            ):
+                record.delete()
+                break
+
         return Response()

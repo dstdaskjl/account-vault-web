@@ -1,2 +1,15 @@
-<mat-grid-list cols="10" rowHeight="2:1">
+<mat-grid-list cols="10" rowHeight="1:1">
+  <mat-grid-tile>
+    <button mat-icon-button color="primary" (click)="onCreateClick()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-grid-tile>
+  @for (website of websites; track website; let index = $index) {
+    <mat-grid-tile (click)="onWebsiteClick(website)">
+      <div class="website">
+        <img src={{iconUrls[website]}} alt={{website}} width="50vw" height="50vh">
+        <h3>{{website}}</h3>
+      </div>
+    </mat-grid-tile>
+  }
 </mat-grid-list>
