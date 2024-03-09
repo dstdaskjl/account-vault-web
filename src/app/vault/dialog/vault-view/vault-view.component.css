@@ -4,8 +4,9 @@
 
 .card-title {
   display: inline-block;
+  position: absolute;
   vertical-align: middle;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 .submit-buttons {

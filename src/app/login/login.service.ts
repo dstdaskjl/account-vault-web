@@ -1,4 +1,3 @@
-import { Observable } from "rxjs";
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
@@ -7,11 +6,4 @@ import { HttpClient } from "@angular/common/http";
 })
 export class LoginService {
   constructor(private http: HttpClient) { }
-
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(
-      'http://localhost:8000/api-token-auth/',
-      { email, password }
-    ) as Observable<any>;
-  }
 }

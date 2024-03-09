@@ -44,6 +44,14 @@ export class LoginComponent {
   onLogInClick(){
     const username = this.form.get('username')?.value;
     const password = this.form.get('password')?.value;
-    this.auth.login({username, password})
+    this.auth.login({username, password}).subscribe(
+      (data: any) => {
+        localStorage.setItem('token', data.access);
+        window.location.href = 'http://localhost:4200/vault';
+      },
+      () => {
+        this.isLoginInvalid = true;
+      }
+    );
   }
 }

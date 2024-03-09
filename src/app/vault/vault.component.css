@@ -1,10 +1,64 @@
-.add-button {
-  text-align: center;
-  vertical-align: middle;
+.card {
+  width: 90%;
+  margin-left: 5%;
+}
+
+.title {
+  display: inline-block;
+  position: relative;
+  margin-left: 10px;
+  bottom: 15px;
+}
+
+.tool {
+  display: flex;
+  position: relative;
+  margin-left: auto;
+  margin-right: 0;
+
+  .add-button {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    margin-top: 10px;
+    margin-left: 10px;
+
+    .mat-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 40px;
+    }
+  }
+
+  .search {
+    display: inline-block;
+    position: relative;
+  }
 }
 
 .website {
+  width: 100%;
   align-items: center;
   text-align: center;
-  display: block;
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+}
+
+h3 {
+  overflow: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .mat-grid-tile-content {
+  position: absolute;
+  display: inline-block;
+}
+
+:host ::ng-deep .title-icon.mat-icon {
+  width: 50px;
+  height: 50px;
+  font-size: 50px;
 }

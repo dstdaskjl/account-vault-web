@@ -29,6 +29,10 @@
   }
 }
 
+.error-message {
+  margin-top: -10px;
+}
+
 .full-width-form {
   width: 100%;
 }

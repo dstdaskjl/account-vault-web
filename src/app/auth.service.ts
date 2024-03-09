@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -26,30 +27,18 @@ export class AuthService {
     }
   }
 
-  public login(user: {username: string, password: string}) {
-    this.http.post(
+  public login(user: {username: string, password: string}): Observable<any> {
+    return this.http.post(
       'http://localhost:8000/api/token/',
       JSON.stringify(user),
       {
         headers: new HttpHeaders({'Content-Type': 'application/json'})
-      }
-    ).subscribe(
-      (data: any) => {
-        localStorage.setItem('token', data.access);
-        this.relocate();
-      },
-      (err: any) => {
-        console.log(err)
       }
     );
   }
 
   public logout() {
     localStorage.clear();
-    this.relocate();
-  }
-
-  private relocate(){
-    window.location.href = 'http://localhost:4200/vault';
+    window.location.href = 'http://localhost:4200/login';
   }
 }

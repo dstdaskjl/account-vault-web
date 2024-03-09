@@ -14,7 +14,7 @@
           <input matInput formControlName="password" type="password" (keyup.enter)="onEnterPressed()">
         </mat-form-field>
         @if (isLoginInvalid){
-          <mat-error style="margin-top: 0;">Wrong username or password.</mat-error>
+          <mat-error class="error-message">Wrong username or password.</mat-error>
         }
     </form>
   </mat-card-content>
