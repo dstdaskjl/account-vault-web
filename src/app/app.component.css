@@ -2,3 +2,22 @@
   position: absolute;
   right: 20px;
 }
+
+.thinking {
+  width: 100px;
+  display: block;
+  margin-right: 10px;
+}
+
+.title {
+  display: inline-block;
+  position: relative;
+  margin-left: 10px;
+  margin-right: 10px;
+  bottom: 20px;
+}
+
+mat-list-item span {
+  vertical-align: top;
+  margin-left: 5px;
+}

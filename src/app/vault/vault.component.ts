@@ -15,11 +15,21 @@ import { VaultViewComponent } from './dialog/vault-view/vault-view.component';
 import { VaultService } from './vault.service';
 
 @Component({
-  selector: 'app-vault',
-  standalone: true,
-  imports: [HttpClientModule, MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, ReactiveFormsModule],
-  templateUrl: './vault.component.html',
-  styleUrl: './vault.component.css'
+    selector: 'app-vault',
+    standalone: true,
+    templateUrl: './vault.component.html',
+    styleUrl: './vault.component.css',
+    imports: [
+      HttpClientModule,
+      MatButtonModule,
+      MatCardModule,
+      MatDialogModule,
+      MatFormFieldModule,
+      MatGridListModule,
+      MatIconModule,
+      MatInputModule,
+      ReactiveFormsModule,
+    ]
 })
 export class VaultComponent implements OnInit {
   vault !: any;
@@ -37,7 +47,7 @@ export class VaultComponent implements OnInit {
     this.form = this.fb.group({
       search: [null]
     })
-    this.cols = window.innerWidth / 200;
+    this.cols = window.innerWidth / 190;
   }
 
   async ngOnInit(): Promise<void> {
@@ -73,7 +83,7 @@ export class VaultComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(){
-    this.cols = window.innerWidth / 200;
+    this.cols = window.innerWidth / 190;
   }
 
   onSearchValueChange(){

@@ -1,34 +1,23 @@
-<mat-card class="card">
-  <mat-card-header>
-    <mat-card-title>
-      <mat-icon class="title-icon">psychology_alt</mat-icon>
-      <div class="title">
-        I FORGOT AGAIN
+<div class="tool" [formGroup]="form">
+  <form class="search">
+    <mat-form-field appearance="fill">
+      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Search</mat-label>
+      <input matInput formControlName="search" (input)="onSearchValueChange()">
+    </mat-form-field>
+  </form>
+  <button class="add-button" mat-mini-fab color="primary" (click)="onCreateClick()" [disableRipple]="true">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<mat-grid-list class="contents" cols={{cols}} rowHeight="1:1">
+  @for (website of websites; track website; let index = $index) {
+    <mat-grid-tile (click)="onWebsiteClick(website)">
+      <div class="website">
+        <img src={{iconUrls[website]}} alt={{website}} width="50%" height="50%">
+        <h3>{{website}}</h3>
       </div>
-    </mat-card-title>
-    <div class="tool" [formGroup]="form">
-      <form class="search">
-        <mat-form-field appearance="fill">
-          <mat-icon matPrefix>search</mat-icon>
-          <mat-label>Search</mat-label>
-          <input matInput formControlName="search" (input)="onSearchValueChange()">
-        </mat-form-field>
-      </form>
-      <button class="add-button" mat-mini-fab color="primary" (click)="onCreateClick()" [disableRipple]="true">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-  </mat-card-header>
-  <mat-card-content>
-    <mat-grid-list class="contents" cols={{cols}} rowHeight="1:1">
-      @for (website of websites; track website; let index = $index) {
-        <mat-grid-tile (click)="onWebsiteClick(website)">
-          <div class="website">
-            <img src={{iconUrls[website]}} alt={{website}} width="50%" height="50%">
-            <h3>{{website}}</h3>
-          </div>
-        </mat-grid-tile>
-      }
-    </mat-grid-list>
-  </mat-card-content>
-</mat-card>
+    </mat-grid-tile>
+  }
+</mat-grid-list>

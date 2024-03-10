@@ -3,18 +3,11 @@
   margin-left: 5%;
 }
 
-.title {
-  display: inline-block;
-  position: relative;
-  margin-left: 10px;
-  bottom: 15px;
-}
-
 .tool {
   display: flex;
   position: relative;
-  margin-left: auto;
-  margin-right: 0;
+  width: 100%;
+  margin-top: 20px;
 
   .add-button {
     display: inline-block;
@@ -22,7 +15,8 @@
     height: 40px;
     font-size: 40px;
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: auto;
+    margin-right: 30px;
 
     .mat-icon {
       width: 40px;
@@ -34,6 +28,7 @@
   .search {
     display: inline-block;
     position: relative;
+    margin-left: 20px;
   }
 }
 
