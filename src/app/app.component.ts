@@ -25,20 +25,15 @@ export class AppComponent implements OnInit {
     private router: Router,
     private service: AppService,
   ) {
-    this.isAuthenticated = false
+    this.isAuthenticated = this.auth.isAuthenticated;
   }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.auth.isAuthenticated;
-    if (this.isAuthenticated){
-      this.router.navigate(['vault'])
-    } else {
-      this.router.navigate(['login'])
-    }
+    this.router.navigate(['home']);
   }
 
   onSignInClick() {
-    this.router.navigate(['login'])
+    this.router.navigate(['login']);
   }
 
   onSignOutClick() {

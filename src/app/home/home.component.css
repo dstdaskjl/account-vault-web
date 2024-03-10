@@ -1,0 +1,10 @@
+div {
+  display: flex;
+  height: 90%;
+  justify-content: center;
+}
+
+img {
+  display: block;
+  margin: auto;
+}
