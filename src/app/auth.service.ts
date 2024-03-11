@@ -27,6 +27,14 @@ export class AuthService {
     }
   }
 
+  public canActivate(): boolean {
+    if (this.isAuthenticated) {
+      return true;
+    }
+    window.location.href = 'http://localhost:4200/login';
+    return false;
+  }
+
   public login(user: {username: string, password: string}): Observable<any> {
     return this.http.post(
       'http://localhost:8000/api/token/',
