@@ -47,7 +47,7 @@ export class LoginComponent {
     this.auth.login({username, password}).subscribe(
       (data: any) => {
         localStorage.setItem('token', data.access);
-        window.location.href = 'http://localhost:4200/vault';
+        this.router.navigate(['vault']);
       },
       () => {
         this.isLoginInvalid = true;

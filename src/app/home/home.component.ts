@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.isAuthenticated){
-      this.router.navigate(['vault'])
+      this.router.navigate(['vault']);
     }
   }
 }

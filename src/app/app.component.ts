@@ -18,7 +18,6 @@ import { AuthService } from './auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  isAuthenticated: boolean;
   showToolbar!: boolean;
   showSidenav!: boolean;
 
@@ -27,7 +26,6 @@ export class AppComponent {
     private router: Router,
     private service: AppService,
   ) {
-    this.isAuthenticated = this.auth.isAuthenticated;
     this.addRouterEventListener();
   }
 
@@ -39,23 +37,23 @@ export class AppComponent {
     });
   }
 
-  navigateTo(url: string){
-    this.router.navigate([url]);
-  }
-
   onSignInClick() {
-    this.navigateTo('login');
+    this.router.navigate(['login']);
   }
 
   onSignOutClick() {
     this.auth.logout();
-    this.navigateTo('login');
+    this.router.navigate(['home']);
+  }
+
+  onVaultClick(){
+    this.router.navigate(['vault']);
   }
 
   updateBoolean(url: string){
     switch (url){
       case '/':
-        this.navigateTo('home');
+        this.router.navigate(['home']);
         break;
       case '/login':
         this.showToolbar = false;

@@ -2,12 +2,7 @@
   <mat-toolbar>
     <img class="thinking" src="/assets/img/thinking.jpg" alt="image">
     <h2>I FORGOT AGAIN</h2>
-    @if (isAuthenticated){
-      <button class="sign-button" mat-button color="primary" (click)="onSignOutClick()"> Sign Out </button>
-    }
-    @else {
-      <button class="sign-button" mat-button color="primary" (click)="onSignInClick()"> Sign In </button>
-    }
+    <button class="sign-button" mat-button color="primary" (click)="onSignInClick()"> Sign In </button>
   </mat-toolbar>
   <router-outlet></router-outlet>
 }
@@ -17,7 +12,7 @@
     <mat-sidenav #sidenav mode="side" opened="true">
       <mat-nav-list>
         <img src="/assets/img/thinking.jpg" alt="image" width="150px" style="margin-bottom: 10px;">
-        <mat-list-item (click)="navigateTo('vault')">
+        <mat-list-item (click)="onVaultClick()">
           <mat-icon mat-list-icon>inventory_2</mat-icon>
           <span>Accounts</span>
         </mat-list-item>

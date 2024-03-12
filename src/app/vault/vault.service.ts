@@ -1,25 +1,18 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, firstValueFrom } from "rxjs";
 import { Vault } from "./vault";
-import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VaultService {
-  localStorage: any;
-
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private http: HttpClient, private auth: AuthService
-    ) {
-      this.localStorage = document.defaultView?.localStorage;
-  }
+    private http: HttpClient,
+    ) { }
 
   async getVault(): Promise<Vault[]> {
-    const token = this.localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const vault = await firstValueFrom(
       this.http.post(
         'http://localhost:8000/api/vault/',
@@ -36,7 +29,7 @@ export class VaultService {
   }
 
   create(data: any): Observable<object>{
-    const token = this.localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     return this.http.post(
       'http://localhost:8000/api/vault/create',
       JSON.stringify(data),
@@ -50,7 +43,7 @@ export class VaultService {
   }
 
   delete(data: any): Observable<object>{
-    const token = this.localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     return this.http.post(
       'http://localhost:8000/api/vault/delete',
       JSON.stringify(data),

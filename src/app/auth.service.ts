@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 
@@ -10,7 +11,21 @@ export class AuthService {
   public get isAuthenticated(): boolean {
     return this.isTokenExpired();
   }
-  constructor(private http: HttpClient) { }
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) { }
+
+  public canActivate(): boolean {
+    if (this.isAuthenticated) {
+      return true;
+    }
+    if (localStorage){
+      this.router.navigate(['login']);
+    }
+    return false;
+  }
 
   private isTokenExpired(): any {
     try {
@@ -27,14 +42,6 @@ export class AuthService {
     }
   }
 
-  public canActivate(): boolean {
-    if (this.isAuthenticated) {
-      return true;
-    }
-    window.location.href = 'http://localhost:4200/login';
-    return false;
-  }
-
   public login(user: {username: string, password: string}): Observable<any> {
     return this.http.post(
       'http://localhost:8000/api/token/',
@@ -47,6 +54,6 @@ export class AuthService {
 
   public logout() {
     localStorage.clear();
-    window.location.href = 'http://localhost:4200/login';
+    this.router.navigate(['home']);
   }
 }
