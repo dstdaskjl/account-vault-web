@@ -1,0 +1,37 @@
+<mat-card class="signup-card">
+  <mat-card-header class="card-header">
+    <mat-card-title>Sign up</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    <form [formGroup]="form">
+      <mat-form-field class="full-width-form">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" type="text">
+      </mat-form-field>
+      <mat-form-field class="full-width-form">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" type="text">
+      </mat-form-field>
+      <mat-form-field class="full-width-form">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" type="text">
+        <mat-error class="error-message">Username is already taken.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-form">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field>
+      <br>
+      <mat-form-field  class="full-width-form">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" (keyup.enter)="onEnterPressed()">
+      </mat-form-field>
+      @if (!isRequestCreated){
+        <mat-error>Something went wrong. Please try it later.</mat-error>
+      }
+    </form>
+  </mat-card-content>
+  <mat-card-actions class="card-action">
+    <button class="login-button" mat-raised-button color="primary" [disabled]="form.invalid" (click)="onRequestClick()">Request</button>
+  </mat-card-actions>
+</mat-card>

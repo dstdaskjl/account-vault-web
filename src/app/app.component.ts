@@ -59,6 +59,10 @@ export class AppComponent {
         this.showToolbar = false;
         this.showSidenav = false;
         break;
+      case '/signup':
+        this.showToolbar = false;
+        this.showSidenav = false;
+        break;
       case '/home':
         this.showToolbar = true;
         this.showSidenav = false;

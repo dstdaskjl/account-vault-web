@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -42,18 +42,52 @@ export class AuthService {
     }
   }
 
-  public login(user: {username: string, password: string}): Observable<any> {
-    return this.http.post(
-      'http://localhost:8000/api/token/',
-      JSON.stringify(user),
+  private isUserApproved(username: string): Observable<any> {
+    return this.http.get(
+      'http://localhost:8000/api/approval/',
       {
-        headers: new HttpHeaders({'Content-Type': 'application/json'})
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        params: new HttpParams().set('username', username)
       }
+    );
+  }
+
+  public login(user: {username: string, password: string}): Observable<any> {
+    return this.isUserApproved(user.username).pipe(
+      switchMap((res: boolean) => {
+        if (res === true) {
+          return this.http.post(
+            'http://localhost:8000/api/token/',
+            JSON.stringify(user),
+            {
+              headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+            }
+          )
+        } else {
+          return throwError('Login failed');
+        }
+      })
     );
   }
 
   public logout() {
     localStorage.clear();
     this.router.navigate(['home']);
+  }
+
+  public signUp(data: {
+    firstName: string,
+    lastName: string,
+    username: string,
+    email: string,
+    password: string
+  }): Observable<any> {
+    return this.http.post(
+      'http://localhost:8000/api/signup/',
+      JSON.stringify(data),
+      {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      }
+    )
   }
 }

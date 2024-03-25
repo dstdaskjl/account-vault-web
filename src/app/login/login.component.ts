@@ -5,8 +5,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { LoginService } from './login.service';
 import { AuthService } from '../auth.service';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-login',

@@ -1,10 +1,13 @@
+import datetime
 import json
 from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Vault
+from .models import AccountRequest, AccountRequestStatus, Vault
 from .serializers import VaultSerializer
 
 
@@ -20,9 +23,52 @@ def decrypt(token: str, key: str) -> str:
     return text.decode("utf8")
 
 
-class UserView(APIView):
+class SignUpView(APIView):
+    permission_classes = (AllowAny,)
+
     def post(self, request, *args, **kwargs):
-        return Response(request.user.first_name)
+        data = json.loads(request.body.decode("utf8"))
+        firstName = data["firstName"]
+        lastName = data["lastName"]
+        username = data["username"]
+        email = data["email"]
+        password = data["password"]
+
+        try:
+          user = User.objects.create_user(
+              first_name=firstName,
+              last_name=lastName,
+              username=username,
+              email=email,
+              password=password,
+              is_superuser=False,
+              is_staff=False,
+              is_active=False,
+              date_joined=datetime.datetime.now()
+          )
+          AccountRequest.objects.create(
+            user=user,
+            status=AccountRequestStatus.objects.get(name='Pending'),
+            created=datetime.datetime.now()
+          )
+          return Response({'isAccountCreated': True})
+        except IntegrityError:
+          return Response({'isAccountCreated': False})
+
+
+class UserApprovalView(APIView):
+    def get(self, request, *args, **kwargs):
+        account_request = AccountRequest.objects.filter(user__username=request.GET.get('username'))
+        if account_request.exists() and account_request[0].status.name == "Accepted":
+            return Response(True)
+        return Response(False)
+
+
+class UsernameView(APIView):
+    def get(self, request, *args, **kwargs):
+        usernames = User.objects.values('username')
+        usernames = [qs['username'] for qs in usernames]
+        return Response(usernames)
 
 
 class VaultView(APIView):
@@ -61,9 +107,6 @@ class VaultDeleteView(APIView):
         website = data["website"]
         username = data["username"]
         password = data["password"]
-        # website = encrypt(data["website"], request.user.password)
-        # username = encrypt(data["username"], request.user.password)
-        # password = encrypt(data["password"], request.user.password)
         for record in Vault.objects.filter(user=request.user):
             if (
                 decrypt(record.website, request.user.password) == website
